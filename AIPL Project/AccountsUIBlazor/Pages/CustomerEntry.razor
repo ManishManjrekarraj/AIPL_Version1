@@ -1,0 +1,52 @@
+﻿@using Accounts.Models.UIModels
+@using System.Net.Http;
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient HttpClient;
+@inject NavigationManager navigationManager;
+
+<div class="customer-entry">
+    <div class="form-group">
+        <label>Name:</label>
+        <InputText @bind-Value="Customer.Name" class="form-control" />
+        <ValidationMessage For="@(() => Customer.Name)" />
+    </div>
+
+    <div class="form-group">
+        <label>Email:</label>
+        <InputText @bind-Value="Customer.Email" class="form-control" />
+        <ValidationMessage For="@(() => Customer.Email)" />
+    </div>
+
+    <div class="form-group">
+        <label>Phone:</label>
+        <InputText @bind-Value="Customer.Phone" class="form-control" />
+        <ValidationMessage For="@(() => Customer.Phone)" />
+    </div>
+
+    @if (ShowRemoveButton)
+    {
+        <button type="button" class="btn btn-danger" @onclick="Remove">
+            Remove
+        </button>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public Customer Customer { get; set; }
+
+    [Parameter]
+    public bool ShowRemoveButton { get; set; }
+
+    [Parameter]
+    public EventCallback<Customer> OnRemove { get; set; }
+
+    // private void Remove()
+    public async Task Remove()
+    {
+        // OnRemove.InvokeAsync(Customer);
+        var obj = await HttpClient.PostAsJsonAsync($"FloatCategory/DeleteCustomer", Customer);
+    }
+}
+

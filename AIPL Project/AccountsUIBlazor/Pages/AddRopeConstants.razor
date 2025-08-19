@@ -1,0 +1,110 @@
+﻿@page "/AddRopeConstants"
+
+@using Accounts.Models.UIModels
+@using System.Net.Http;
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient HttpClient;
+@inject NavigationManager navigationManager;
+
+<h3>AddRopeConstants</h3>
+
+<EditForm Model="ropeConstants" OnValidSubmit="ValidSubmit">
+    <div class="row">
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <label for="ropeType">Rope Type(with Core)</label>
+                <input type="text" class="form-control" id="ropeType" @bind-value="@ropeConstants.RopeType" placeholder="enter rope type..." />
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <label for="tensileStrength">Tensile Strength</label>
+                <input type="text" class="form-control" id="tensileStrength" @bind-value="@ropeConstants.TensileStrength" placeholder="enter tensile strength..." />
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <label for="kValue">K'Value</label>
+                <input type="text" class="form-control" id="kValue" @bind-value="@ropeConstants.KValue" placeholder="enter k value..." />
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <label for="RequiredDia">Required Diameter(mm)</label>
+                <input type="text" class="form-control" id="RequiredDia" @bind-value="@ropeConstants.RequiredDiameter" placeholder="enter required diameter..." />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" Style="margin-top:10px">Add</button>
+
+    </div>
+</EditForm>
+
+<div class="row mt-2">
+    <h4>Chain Constants Details</h4>
+    <div class="col-md-12">
+        <RadzenDataGrid @ref="ropeConstantsGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                        Data="@ropeconstantsList" TItem="UIRopeConstants" ColumnWidth="200px">
+            <Columns>
+                <RadzenDataGridColumn TItem="UIRopeConstants" Property="RopeType" Title="Rope Type" Width="120px" />
+
+                <RadzenDataGridColumn TItem="UIRopeConstants" Property="TensileStrength" Title="Tensile Strength" Width="120px" />
+
+                <RadzenDataGridColumn TItem="UIRopeConstants" Property="KValue" Title="K'Value" Width="120px" />
+
+                <RadzenDataGridColumn TItem="UIRopeConstants" Property="RequiredDiameter" Title="RequiredDiameter" Width="120px" />
+
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</div>
+
+@code {
+    public UIRopeConstants ropeConstants { get; set; } = new();
+    private UIRopeConstants ropeconstants;
+
+    RadzenDataGrid<UIRopeConstants> ropeConstantsGrid;
+    private List<UIRopeConstants> ropeconstantsList = new List<UIRopeConstants>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadChainConstantsDetails();
+    }
+
+    public async Task LoadChainConstantsDetails()
+    {
+        try
+        {
+            ropeconstantsList = await HttpClient.GetFromJsonAsync<List<UIRopeConstants>>("RopeConstants/GetAllRopeConstants");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading rope constants: {ex.Message}");
+        }
+    }
+
+    public async Task ValidSubmit(EditContext formContext)
+    {
+        ropeconstants = (UIRopeConstants)formContext.Model;
+
+        try
+        {
+            // Console.WriteLine($"data : {ropeconstants.RopeType}");
+            // Console.WriteLine($"data : {ropeconstants.TensileStrength}");
+            // Console.WriteLine($"data : {ropeconstants.KValue}");
+            // Console.WriteLine($"data : {ropeconstants.RequiredDiameter}");
+            var obj = await HttpClient.PostAsJsonAsync($"RopeConstants", ropeconstants);
+            // Console.WriteLine(obj);
+            ropeConstants = new();
+
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message.ToString());
+        }
+        //return null;
+    }
+
+}

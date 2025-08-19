@@ -1,0 +1,620 @@
+﻿@page "/InputsAndLayout"
+
+@using Accounts.Models.UIModels
+@using System.Net.Http;
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient HttpClient;
+@inject NavigationManager navigationManager;
+@inject NavigationManager Navigation
+
+<h3>InputsandLayout</h3>
+
+<div class="rz-p-sm-12">
+    <RadzenAccordion Multiple="true">
+        <Items>  
+            @* Inputs Table *@  
+
+            <RadzenAccordionItem Text="Input Table" CollapseTitle="Collapse Input Table."  
+            ExpandTitle="Expand Input Table." CollapseAriaLabel="Collapse the input details."
+            ExpandAriaLabel="Expand the input details." @bind-Selected="EnabledCollapsed">
+                @* Icon="account_balance_wallet"*@  
+                @* Current Inputs *@  
+                <EditForm Model="UIInputsAndLayout" OnValidSubmit="HandleInputAndOutputSubmit">  
+                    <div class="container-fluid">  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Type of Float</label>  
+                                <select class="form-select" value="@UIInputsAndLayout.FloatSelection" @onchange="OnFloatSelectionChanged">
+                                    <option value="">-- Select Type of Float --</option>  
+                                    @foreach (var category in FloatCategories)  
+                                    {  
+                                        <option value="@category.FloatCategoryId">@category.FloatCategory</option>  
+                                    }  
+
+                                </select>  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Site Conditions</label>  
+                                <input type="text" class="form-control" @bind-value="UIInputsAndLayout.SiteConditions" placeholder="Enter site conditions..." />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Length</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputsAndLayout.Length" />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Width</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputsAndLayout.Width" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Water Body</label>  
+                                <InputSelect class="form-control pt-1" @bind-Value="UIInputsAndLayout.WaterBody">  
+                                    @foreach (var value in Enum.GetValues<WaterBody>())  
+                                    {  
+                                        <option value="@value">@value</option>  
+                                    }  
+                                </InputSelect>  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Max Water Depth</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputsAndLayout.MaxWaterDepth" />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Min Water Depth</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputsAndLayout.MinWaterDepth" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Current Speed</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputsAndLayout.CurrentSpeed" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Wind Velocity</label>  
+                                <input type="number" class="form-control" step="any" @bind-value="UIInputsAndLayout.WindVelocity" />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Wave Height</label>  
+                                <input type="number" class="form-control" step="any" @bind-value="UIInputsAndLayout.WaveHeight" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Drag Coefficient - X</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputsAndLayout.DragCoefficientX" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Drag Coefficient - Y</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputsAndLayout.DragCoefficientY" />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Scope To Water Depth Ratio</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputsAndLayout.ScopeToWaterDepthRatio" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Type Of Soil</label>  
+                                <InputSelect class="form-control pt-1" @bind-Value="UIInputsAndLayout.TypeOfSoil">  
+                                    @foreach (var value in Enum.GetValues<TypeOfSoil>())  
+                                    {  
+                                        <option value="@value">@value</option>  
+                                    }  
+                                </InputSelect>  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Material Of Anchor</label>  
+                                <InputSelect class="form-control pt-1" @bind-Value="UIInputsAndLayout.MaterialOfAnchor">  
+                                    @foreach (var value in Enum.GetValues<MaterialOfAnchor>())  
+                                    {  
+                                        <option value="@value">@value</option>  
+                                    }  
+                                </InputSelect>  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Additional Information</label>  
+                                <input type="text" class="form-control" @bind-value="UIInputsAndLayout.AdditionalInformation" placeholder="enter additional information..." />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-3">  
+                            <div class="col-md-12">  
+                                <button type="submit" class="btn btn-primary">Add Inputs</button>  
+                            </div>  
+                        </div>  
+
+                    </div>  
+                </EditForm>  
+            </RadzenAccordionItem>  
+
+            @* Layout Table*@  
+            <RadzenAccordionItem Text="Layout Table" CollapseTitle="Collapse Layout Table."  
+            ExpandTitle="Expand Layout Table." CollapseAriaLabel="Collapse the layout details."
+            ExpandAriaLabel="Expand the layouts details." @bind-Selected="EnabledCollapsed">
+                @* Icon="account_box"*@  
+                <EditForm Model="FloatSizeLayoutList" OnValidSubmit="SubmitHandler">  
+
+                    <h4>Add Multiple Float Sizes</h4>  
+
+                    @foreach (var single_floatSize in FloatSizeLayoutList)  
+                    {  
+                        <LayoutEntry FloatSizeLayoutModel="@single_floatSize"  
+                        ShowRemoveButton="@(FloatSizeLayoutList.Count > 1)"
+                        SelectFloat="@UIInputsAndLayout.FloatSelection"
+                        FloatCategoryItems="@FloatSelectionItems"
+                        AllParameters="@AllParameters"
+                        OnRemove="@(c => FloatSizeLayoutList.Remove(c))" />  
+                    }  
+
+                    <button type="button" class="btn btn-secondary" @onclick="AddNewFloatSize">  
+                        Add Another Float Size  
+                    </button>  
+
+                    <button type="submit" class="btn btn-primary">Submit All</button>  
+                </EditForm>  
+                @* <button onsubmit="@SubmitHandler">Submit Both</button> *@  
+            </RadzenAccordionItem>  
+
+            @* Output Table*@  
+            <RadzenAccordionItem Text="Output Table" CollapseTitle="Collapse Output Table."  
+            ExpandTitle="Expand Output Table." CollapseAriaLabel="Collapse the output details."
+            ExpandAriaLabel="Expand the output details." @bind-Selected="EnabledCollapsed">
+                <EditForm Model="OutputsTable">  
+                    <div class="row">  
+                        <div class="row" style="margin-top:10px">  
+                            <div class="col-md-12">  
+                                <label for="TotalWeight">Total Weight</label>  
+                                <input type="text" class="form-control" id="TotalWeight" @bind-value="@OutputsTable.TotalWeight" placeholder="enter total weight..." />  
+                            </div>  
+                        </div>  
+
+                        <div class="row" style="margin-top:10px">  
+                            <div class="col-md-12">  
+                                <label for="GlobalCGX">Global CG - X</label>  
+                                <input type="text" class="form-control" id="GlobalCGX" @bind-value="@OutputsTable.GlobalCGX" placeholder="enter global cg-x..." />  
+                            </div>  
+                        </div>  
+                        <div class="row" style="margin-top:10px">  
+                            <div class="col-md-12">  
+                                <label for="GlobalCGY">Global CG - Y</label>  
+                                <input type="text" class="form-control" id="GlobalCGY" @bind-value="@OutputsTable.GlobalCGY" placeholder="enter global cg-y..." />  
+                            </div>  
+                        </div>  
+                        <div class="row" style="margin-top:10px">  
+                            <div class="col-md-12">  
+                                <label for="GlobalCGZ">Global CG - Z</label>  
+                                <input type="text" class="form-control" id="GlobalCGZ" @bind-value="@OutputsTable.GlobalCGZ" placeholder="enter global cg-z..." />  
+                            </div>  
+                        </div>  
+                        <div class="row" style="margin-top:10px">  
+                            <div class="col-md-12">  
+                                <label for="GlobalMx">Global M-x</label>  
+                                <input type="text" class="form-control" id="GlobalMx" @bind-value="@OutputsTable.GlobalMx" placeholder="enter global m-x..." />  
+                            </div>  
+                        </div>  
+                        <div class="row" style="margin-top:10px">  
+                            <div class="col-md-12">  
+                                <label for="GlobalMy">Global M-y</label>  
+                                <input type="text" class="form-control" id="GlobalMy" @bind-value="@OutputsTable.GlobalMy" placeholder="enter global m-y..." />  
+                            </div>  
+                        </div>  
+                        <div class="row" style="margin-top:10px">  
+                            <div class="col-md-12">  
+                                <label for="TotalArea">Total Area</label>  
+                                <input type="text" class="form-control" id="TotalArea" @bind-value="@OutputsTable.TotalArea" placeholder="enter total area..." />  
+                            </div>  
+                        </div>  
+                        <div class="row" style="margin-top:10px">  
+                            <div class="col-md-12">  
+                                <label for="UnitBuoyancyCapacity">Unit Buoyancy Capacity</label>  
+                                <input type="text" class="form-control" id="UnitBuoyancyCapacity" @bind-value="@OutputsTable.UnitBuoyancyCapacity" placeholder="enter unit buoyancy capacity..." />  
+                            </div>  
+                        </div>  
+                        <button type="submit" class="btn btn-primary" style="margin-top:10px">Submit</button>  
+
+                    </div>  
+                </EditForm>  
+            </RadzenAccordionItem>  
+
+            @* Load Data Table*@  
+            <RadzenAccordionItem Text="Load Data Table" CollapseTitle="Collapse Load Data Table."  
+            ExpandTitle="Expand Load Data Table." CollapseAriaLabel="Collapse the load data details."
+            ExpandAriaLabel="Expand the load data details." @bind-Selected="EnabledCollapsed">
+                <div class="row mt-2">  
+                    <h4>Load Data Table</h4>  
+                    <div class="col-md-12">  
+                        <RadzenDataGrid @ref="loadDatasGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"  
+                        Data="@loaddatasList" TItem="UILoadDatas" ColumnWidth="200px">  
+                            <Columns>  
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="LoadName" Title="Load Name" Width="120px" />  
+
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="LoadType" Title="Load Type" Width="120px" />  
+
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="LoadValueTonnes" Title="Load Value (Tonnes)" Width="120px" />  
+
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="LocationX" Title="Location X" Width="120px" />  
+
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="LocationY" Title="Location Y" Width="120px" />  
+
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="LocationZ" Title="Location Z" Width="120px" />  
+
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="AreaX" Title="Area X" Width="120px" />  
+
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="AreaY" Title="Area Y" Width="120px" />  
+
+                                <RadzenDataGridColumn TItem="UILoadDatas" Property="DragCoefficients" Title="Drag Coefficients" Width="120px" />  
+
+                            </Columns>  
+                        </RadzenDataGrid>  
+                    </div>  
+                </div>  
+            </RadzenAccordionItem>  
+
+            @* Combined Inputs Layout Table*@  
+            <RadzenAccordionItem Text="Combined Inputs Layout Table" CollapseTitle="Collapse Load Data Table."  
+            ExpandTitle="Expand Load Data Table." CollapseAriaLabel="Collapse the load data details."
+            ExpandAriaLabel="Expand the load data details." @bind-Selected="EnabledCollapsed">
+                <EditForm Model="UIInputLayoutMaster" OnValidSubmit="SubmitHandler">  
+                    <div class="container-fluid">  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Type of Float</label>  
+                                <select @bind="UIInputLayoutMaster.InputsAndLayout.FloatSelection" class="form-select">  
+                                    <option value="">-- Select Type of Float --</option>  
+                                    @foreach (var category in FloatCategories)  
+                                    {  
+                                        <option value="@category.FloatCategory">@category.FloatCategory</option>  
+                                    }  
+                                </select>  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Site Conditions</label>  
+                                <input type="text" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.SiteConditions" placeholder="Enter site conditions..." />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Length</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.Length" />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Width</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.Width" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Water Body</label>  
+                                <InputSelect class="form-control pt-1" @bind-Value="UIInputLayoutMaster.InputsAndLayout.WaterBody">  
+                                    @foreach (var value in Enum.GetValues<WaterBody>())  
+                                    {  
+                                        <option value="@value">@value</option>  
+                                    }  
+                                </InputSelect>  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Max Water Depth</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.MaxWaterDepth" />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Min Water Depth</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.MinWaterDepth" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Current Speed</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.CurrentSpeed" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Wind Velocity</label>  
+                                <input type="number" class="form-control" step="any" @bind-value="UIInputLayoutMaster.InputsAndLayout.WindVelocity" />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Wave Height</label>  
+                                <input type="number" class="form-control" step="any" @bind-value="UIInputLayoutMaster.InputsAndLayout.WaveHeight" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Drag Coefficient - X</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.DragCoefficientX" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Drag Coefficient - Y</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.DragCoefficientY" />  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Scope To Water Depth Ratio</label>  
+                                <input type="number" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.ScopeToWaterDepthRatio" />  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Type Of Soil</label>  
+                                <InputSelect class="form-control pt-1" @bind-Value="UIInputLayoutMaster.InputsAndLayout.TypeOfSoil">  
+                                    @foreach (var value in Enum.GetValues<TypeOfSoil>())  
+                                    {  
+                                        <option value="@value">@value</option>  
+                                    }  
+                                </InputSelect>  
+                            </div>  
+                            <div class="col-md-4">  
+                                <label>Material Of Anchor</label>  
+                                <InputSelect class="form-control pt-1" @bind-Value="UIInputLayoutMaster.InputsAndLayout.MaterialOfAnchor">  
+                                    @foreach (var value in Enum.GetValues<MaterialOfAnchor>())  
+                                    {  
+                                        <option value="@value">@value</option>  
+                                    }  
+                                </InputSelect>  
+                            </div>  
+                        </div>  
+
+                        <div class="row mt-2">  
+                            <div class="col-md-4">  
+                                <label>Additional Information</label>  
+                                <input type="text" class="form-control" @bind-value="UIInputLayoutMaster.InputsAndLayout.AdditionalInformation" placeholder="enter additional information..." />  
+                            </div>  
+                        </div>  
+
+                        @* <div class="row mt-3">  
+                           <div class="col-md-12">  
+                               <button type="submit" class="btn btn-primary">Add Inputs</button>  
+                           </div>  
+                       </div> *@  
+
+
+                    </div>  
+                    <h4>Add Multiple Float Sizes</h4>  
+
+                    @* @foreach (var single_floatSize in FloatSizeLayoutList)  
+                   {  
+                       <LayoutEntry FloatSizeLayoutModel="@single_floatSize"  
+                       ShowRemoveButton="@(FloatSizeLayoutList.Count > 1)"  
+                       FloatCategories="@FloatCategories"  
+                       OnRemove="@(c => FloatSizeLayoutList.Remove(c))" />  
+                   } *@  
+                    @foreach (var single_floatSize in UIInputLayoutMaster.FloatSizeLayoutList)  
+                    {  
+                        <LayoutEntry FloatSizeLayoutModel="@single_floatSize"  
+                        ShowRemoveButton="@(UIInputLayoutMaster.FloatSizeLayoutList.Count > 1)"
+                        FloatCategoryItems="@FloatSelectionItems"
+                                     AllParameters="@AllParameters"
+                        OnRemove="@(c => UIInputLayoutMaster.FloatSizeLayoutList.Remove(c))" />  
+                    }  
+
+                    <button type="button" class="btn btn-secondary" @onclick="AddNewFloatSize">  
+                        Add Another Float Size  
+                    </button>  
+
+                    <button type="submit" class="btn btn-primary">Submit All</button>  
+                </EditForm>  
+            </RadzenAccordionItem>  
+        </Items>
+    </RadzenAccordion>
+</div>
+
+
+@code {
+    public List<UIFloatCategory> FloatCategories = new();
+    public List<UIFloatSelection> FloatSelectionItems = new();
+    public List<UIParameters> AllParameters = new();
+    bool EnabledCollapsed = true;
+    public UIInputsAndLayout UIInputsAndLayout { get; set; } = new();
+
+    public UIInputsAndLayout uiinputsandlayout;
+
+    // for float size layout list
+    public UIFloatSizeLayout FloatSizeLayoutModel = new UIFloatSizeLayout();
+    public List<UIFloatSizeLayout> FloatSizeLayoutList = new List<UIFloatSizeLayout>();
+    public List<UIFloatSizeLayout> floatsizelayoutlist;
+
+    // for input layout combined table
+    public UIInputLayoutMaster UIInputLayoutMaster { get; set; } = new();
+    public UIInputLayoutMaster uIInputLayoutMaster;
+
+    // get projectId
+    private Guid projectId;
+    //convert query param string to guid
+    private Guid ParseGuid;
+
+    private void AddNewFloatSize()
+    {
+        FloatSizeLayoutList.Add(new UIFloatSizeLayout());
+
+        UIInputLayoutMaster.InputsAndLayout = new UIInputsAndLayout
+        {
+            FloatSelection = "MODULAR_BARGE",
+            Length = 1,
+            Width = 2,
+            WaterBody = WaterBody.Ocean,
+            MaxWaterDepth = 10,
+            MinWaterDepth = 2,
+            CurrentSpeed = 1,
+            WindVelocity = 41.73m,
+            WaveHeight = 0.6m,
+            DragCoefficientX = 1,
+            DragCoefficientY = 2,
+            ScopeToWaterDepthRatio = 4,
+            TypeOfSoil = TypeOfSoil.Quartz,
+            MaterialOfAnchor = MaterialOfAnchor.SmoothConcrete,
+            ProjectId = Guid.Parse("C9E638C9-E683-45F1-9FD2-568015D57B43")
+        };
+
+        UIInputLayoutMaster.FloatSizeLayoutList.Add(new UIFloatSizeLayout
+        {
+            FloatSize = "MB_3x3x1.2",
+            XCordinate = 1,
+            YCordinate = 2
+        });
+
+        //UIInputLayoutMaster.FloatSizeLayoutList.Add(new UIFloatSizeLayout());
+
+    }
+
+
+    // Output Table
+    public UIOutputDetails OutputsTable { get; set; } = new();
+    public List<UIOutputDetails> OutputsTableList = new();
+
+    // Load Data Table
+    RadzenDataGrid<UILoadDatas> loadDatasGrid;
+    private List<UILoadDatas> loaddatasList = new List<UILoadDatas>();
+
+    public async Task HandleLayoutSubmit(EditContext formContext)
+    {
+        floatsizelayoutlist = (List<UIFloatSizeLayout>)formContext.Model;
+
+        // Console.WriteLine($"FloatSize: {FloatSizeLayoutModel.FloatSize}");
+        // Console.WriteLine($"XCordinate: {FloatSizeLayoutModel.XCordinate}");
+        // Console.WriteLine($"YCordinate: {FloatSizeLayoutModel.YCordinate}");
+        // Console.WriteLine($"WeightTonns: {FloatSizeLayoutModel.WeightTonns}");
+        // Console.WriteLine($"COGx: {FloatSizeLayoutModel.COGx}");
+        // Console.WriteLine($"COGy: {FloatSizeLayoutModel.COGy}");
+        // Console.WriteLine($"COGz: {FloatSizeLayoutModel.COGz}");
+        // Console.WriteLine($"Area: {FloatSizeLayoutModel.Area}");
+        // Console.WriteLine($"MOIxLocalCentroid: {FloatSizeLayoutModel.MOIxLocalCentroid}");
+        // Console.WriteLine($"MOIyLocalCentroid: {FloatSizeLayoutModel.MOIyLocalCentroid}");
+        // Console.WriteLine($"WeighedX: {FloatSizeLayoutModel.WeighedX}");
+        // Console.WriteLine($"WeighedY: {FloatSizeLayoutModel.WeighedY}");
+        // Console.WriteLine($"WeighedZ: {FloatSizeLayoutModel.WeighedZ}");
+        // Console.WriteLine($"MOIx: {FloatSizeLayoutModel.MOIx}");
+        // Console.WriteLine($"MOIy: {FloatSizeLayoutModel.MOIy}");
+
+        var obj = await HttpClient.PostAsJsonAsync($"InputsandLayout/AddFloatSizes", floatsizelayoutlist);
+        FloatSizeLayoutList = new List<UIFloatSizeLayout>();
+        AddNewFloatSize();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+      
+        UIInputLayoutMaster.InputsAndLayout = new UIInputsAndLayout
+            {
+                FloatSelection = "MODULAR_BARGE",
+                Length = 1,
+                Width = 2,
+                WaterBody = WaterBody.Ocean,
+                MaxWaterDepth = 10,
+                MinWaterDepth = 2,
+                CurrentSpeed = 1,
+                WindVelocity = 41.73m,
+                WaveHeight = 0.6m,
+                DragCoefficientX = 1,
+                DragCoefficientY = 2,
+                ScopeToWaterDepthRatio = 4,
+                TypeOfSoil = TypeOfSoil.Quartz,
+                MaterialOfAnchor = MaterialOfAnchor.SmoothConcrete,
+                ProjectId = Guid.Parse("C9E638C9-E683-45F1-9FD2-568015D57B43")
+            };
+
+        UIInputLayoutMaster.FloatSizeLayoutList.Add(new UIFloatSizeLayout
+            {
+                FloatSize = "MB_3x3x1.2",
+                XCordinate = 1,
+                YCordinate = 2
+            });
+
+        AddNewFloatSize();
+
+         AllParameters = await HttpClient.GetFromJsonAsync<List<UIParameters>>($"Parameters/GetAllParameters");
+
+        FloatSelectionItems = await HttpClient.GetFromJsonAsync<List<UIFloatSelection>>($"FloatSelection/GetAllFloatSelections");
+
+        FloatCategories = await HttpClient.GetFromJsonAsync<List<UIFloatCategory>>($"FloatCategory/GetAllCategories");
+
+        loaddatasList = await HttpClient.GetFromJsonAsync<List<UILoadDatas>>($"InputsandLayout/GetAllLoadData");
+
+        // OutputsTableList = await HttpClient.Ge tFromJsonAsync<List<UIOutputDetails>>($"OutputDetails/GetAllOutputTableDetails");
+
+        // update project id from query parameter
+        // GetProjectId();
+    }
+
+    public void GetProjectId()
+    {
+        projectId = Guid.NewGuid();
+        // var uri = Navigation.ToAbsoluteUri(Navigation.Uri);
+        // var queryParams = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        // ParseGuid = //Guid.Parse(queryParams["projectid"]);
+        // projectId = ParseGuid;
+    }
+
+
+    public async Task HandleInputAndOutputSubmit(EditContext formContext)
+    {
+        uiinputsandlayout = (UIInputsAndLayout)formContext.Model;
+
+        try
+        {
+            // Console.WriteLine($"FloatSelection : {uiinputsandlayout.FloatSelection} ");
+            // Console.WriteLine($"SiteConditions : {uiinputsandlayout.SiteConditions} ");
+            // Console.WriteLine($"Length : {uiinputsandlayout.Length} ");
+            // Console.WriteLine($"Width : {uiinputsandlayout.Width} ");
+            // Console.WriteLine($"WaterBody : {uiinputsandlayout.WaterBody} ");
+            // Console.WriteLine($"MaxWaterDepth : {uiinputsandlayout.MaxWaterDepth} ");
+            // Console.WriteLine($"MinWaterDepth : {uiinputsandlayout.MinWaterDepth} ");
+            // Console.WriteLine($"CurrentSpeed : {uiinputsandlayout.CurrentSpeed} ");
+            // Console.WriteLine($"WindVelocity : {uiinputsandlayout.WindVelocity} ");
+            // Console.WriteLine($"WaveHeight : {uiinputsandlayout.WaveHeight} ");
+            // Console.WriteLine($"DragCoefficientX : {uiinputsandlayout.DragCoefficientX} ");
+            // Console.WriteLine($"DragCoefficientY : {uiinputsandlayout.DragCoefficientY} ");
+            // Console.WriteLine($"ScopeToWaterDepthRatio : {uiinputsandlayout.ScopeToWaterDepthRatio} ");
+            // Console.WriteLine($"TypeOfSoil : {uiinputsandlayout.TypeOfSoil} ");
+            // Console.WriteLine($"MaterialOfAnchor : {uiinputsandlayout.MaterialOfAnchor} ");
+            // Console.WriteLine($"AdditionalInformation : {uiinputsandlayout.AdditionalInformation} ");
+
+            var obj = await HttpClient.PostAsJsonAsync($"InputsandLayout/AddInputs", uiinputsandlayout);
+
+            UIInputsAndLayout = new();
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message.ToString());
+        }
+    }
+
+    public async Task SubmitHandler(EditContext formContext)
+    {
+        uIInputLayoutMaster = (UIInputLayoutMaster)formContext.Model;
+
+        try
+        {
+            uIInputLayoutMaster.Project_Id = projectId;
+            var obj = await HttpClient.PostAsJsonAsync($"InputsandLayout/AddInputsLayout", uIInputLayoutMaster);
+            UIInputLayoutMaster = new();
+
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message.ToString());
+        }
+    }
+
+    private async Task OnFloatSelectionChanged(ChangeEventArgs e)
+    {
+        var selectedValue = e.Value?.ToString();
+        if (!string.IsNullOrEmpty(selectedValue))
+        {
+            UIInputsAndLayout.FloatSelection = selectedValue;
+            // Perform any additional logic based on the selected value
+            Console.WriteLine($"Selected Float Type: {selectedValue}");
+        }
+    }
+
+}

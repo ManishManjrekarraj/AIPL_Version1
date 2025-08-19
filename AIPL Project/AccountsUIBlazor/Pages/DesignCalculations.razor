@@ -1,0 +1,569 @@
+﻿@page "/DesignCalculations"
+
+@using Accounts.Models.UIModels
+@using System.Net.Http;
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient HttpClient;
+@inject NavigationManager navigationManager;
+
+<h3>DesignCalculations</h3>
+
+<div class="rz-p-sm-12">
+    <RadzenAccordion>
+        <Items>
+            @* Pontoon and sitedata*@
+            <RadzenAccordionItem Text="Pontoon and Sitedata Table" CollapseTitle="Collapse Pontoon and Sitedata Table."
+            ExpandTitle="Expand Pontoon and Sitedata Table." CollapseAriaLabel="Collapse Table."
+            ExpandAriaLabel="Expand the Table.">
+                <EditForm Model="@UIPontoonAndSiteData">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label>Vessel Length</label>
+                                <input class="form-control" type="number" @bind-value="UIPontoonAndSiteData.VesselLength" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Vessel Width</label>
+                                <input class="form-control" type="number" @bind-value="UIPontoonAndSiteData.VesselWidth" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Vessel Depth</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.VesselDepth" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Wind Speed</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.WindSpeed" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label>Current Speed</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.CurrentSpeed" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Wave Height</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.WaveHeight" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Vessel Weight</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.VesselWeight" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Vessel COG X</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.VesselCOGX" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label>Vessel COG Y</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.VesselCOGY" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Vessel COG Z</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.VesselCOGZ" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>MOI X</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.MOIX" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>MOI Y</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.MOIY" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label>Vessel Buoyancy</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.VesselBuoyancy" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Total Area</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.TotalArea" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Min Freeboard</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.MinimumFreeBoard" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Max Draft</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.MaximumDraft" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label>Drag Coefficient X</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.DragCoefficientX" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Drag Coefficient Y</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.DragCoefficientY" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Water Depth</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.WaterDepth" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label>Scope to Water Depth Ratio</label>
+                                <input class="form-control" type="number" step="0.01" @bind-value="UIPontoonAndSiteData.ScopeToWaterDepthRatio" />
+                            </div>
+                        </div>
+
+                        <div class="text-end">
+                            <button class="btn btn-primary mt-3" type="submit">Submit</button>
+                        </div>
+                    </div>
+                </EditForm>
+            </RadzenAccordionItem>
+
+            @* Hydrostatics*@
+            <RadzenAccordionItem Text="Hydrostatics Table" CollapseTitle="Collapse Hydrostatics Table."
+            ExpandTitle="Expand Hydrostatics Table." CollapseAriaLabel="Collapse hydrostatics table."
+            ExpandAriaLabel="Expand hydrostatics table.">
+                <RadzenDataGrid @ref="loadDatasGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                Data="@loadDatasList" TItem="UILoadDatas" ColumnWidth="200px">
+
+                    <Columns>
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="ItemNumber" Title="Item Number" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="LoadName" Title="Load Name" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="LoadType" Title="Load Type" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="LoadValue" Title="Load Value" />
+
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="LocationX" Title="Location X" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="LocationY" Title="Location Y" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="LocationZ" Title="Location Z" />
+
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="AreaX" Title="Area X" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="AreaY" Title="Area Y" />
+
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="DragCoefficients" Title="Drag Coefficients" />
+
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="ForceX" Title="Force X" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="ForceY" Title="Force Y" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="ForceZ" Title="Force Z" />
+
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="MomentX" Title="Moment X" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="MomentY" Title="Moment Y" />
+                        <RadzenDataGridColumn TItem="UILoadDatas" Property="MomentZ" Title="Moment Z" />
+                    </Columns>
+                </RadzenDataGrid>
+
+            </RadzenAccordionItem>
+
+            @* Buoyancy calculations*@
+            <RadzenAccordionItem Text="Buoyancy Calculations Table" CollapseTitle="Collapse Buoyancy Calculations Table."
+            ExpandTitle="Expand Buoyancy Calculations Table." CollapseAriaLabel="Collapse buoyancy calculations table."
+            ExpandAriaLabel="Expand buoyancy calculations table.">
+                <EditForm Model="BuoyancyModel" OnValidSubmit="HandleBuoyancySubmit">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="TotalBuoyancy" class="form-label">Total Buoyancy</label>
+                                <InputNumber id="TotalBuoyancy" class="form-control" @bind-Value="BuoyancyModel.TotalBuoyancy" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="ReservedBuoyancy" class="form-label">Reserved Buoyancy</label>
+                                <InputNumber id="ReservedBuoyancy" class="form-control" @bind-Value="BuoyancyModel.ReservedBuoyancy" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="Draft" class="form-label">Draft</label>
+                                <InputNumber id="Draft" class="form-control" @bind-Value="BuoyancyModel.Draft" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="Freeboard" class="form-label">Freeboard</label>
+                                <InputNumber id="Freeboard" class="form-control" @bind-Value="BuoyancyModel.Freeboard" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </EditForm>
+
+            </RadzenAccordionItem>
+
+            @* Stability about x*@
+            <RadzenAccordionItem Text="Stability About X Table" CollapseTitle="Collapse stability About X Table."
+            ExpandTitle="Expand stability About X Table." CollapseAriaLabel="Collapse stability about x table."
+            ExpandAriaLabel="Expand stability about x table.">
+                <EditForm Model="StabilityAboutXModel" OnValidSubmit="HandleStabilityAboutX">
+
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="COB" class="form-label">COB</label>
+                                <InputNumber id="COB" class="form-control" @bind-Value="StabilityAboutXModel.COB" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="COGZ" class="form-label">COG-Z</label>
+                                <InputNumber id="COGZ" class="form-control" @bind-Value="StabilityAboutXModel.COGZ" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="BMIvx" class="form-label">BM, I/V, X</label>
+                                <InputNumber id="BMIvx" class="form-control" @bind-Value="StabilityAboutXModel.BMIVX" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="BG" class="form-label">BG</label>
+                                <InputNumber id="BG" class="form-control" @bind-Value="StabilityAboutXModel.BG" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="GMX" class="form-label">GM, X</label>
+                                <InputNumber id="GMX" class="form-control" @bind-Value="StabilityAboutXModel.GMX" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="MaxTiltAngleX" class="form-label">Maximum Tilt Angle-x</label>
+                                <InputNumber id="MaxTiltAngleX" class="form-control" @bind-Value="StabilityAboutXModel.MaxTiltAngleX" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="MaxRightningMomentX" class="form-label">Max Rightning Moment-x</label>
+                                <InputNumber id="MaxRightningMomentX" class="form-control" @bind-Value="StabilityAboutXModel.MaxRightningMomentX" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="MaxHeelingMomentX" class="form-label">Max Heeling Moment-x</label>
+                                <InputNumber id="MaxHeelingMomentX" class="form-control" @bind-Value="StabilityAboutXModel.MaxHeelingMomentX" />
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label for="TiltAngleX" class="form-label">Tilt Angle-x</label>
+                                <InputNumber id="TiltAngleX" class="form-control" @bind-Value="StabilityAboutXModel.TiltAngleX" />
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </EditForm>
+
+            </RadzenAccordionItem>
+
+            @* Stability about y*@
+            <RadzenAccordionItem Text="Stability About Y Table" CollapseTitle="Collapse stability About Y Table."
+            ExpandTitle="Expand stability About Y Table." CollapseAriaLabel="Collapse stability about y table."
+            ExpandAriaLabel="Expand stability about y table.">
+                <EditForm Model="StabilityAboutYModel" OnValidSubmit="HandleStabilityAboutY">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="COB" class="form-label">COB</label>
+                                <InputNumber id="COB" class="form-control" @bind-Value="@StabilityAboutYModel.COB" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="COGZ" class="form-label">COGZ</label>
+                                <InputNumber id="COGZ" class="form-control" @bind-Value="@StabilityAboutYModel.COGZ" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="BMIVY" class="form-label">BMIVY</label>
+                                <InputNumber id="BMIVY" class="form-control" @bind-Value="@StabilityAboutYModel.BMIVY" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="BG" class="form-label">BG</label>
+                                <InputNumber id="BG" class="form-control" @bind-Value="@StabilityAboutYModel.BG" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="GMY" class="form-label">GMY</label>
+                                <InputNumber id="GMY" class="form-control" @bind-Value="@StabilityAboutYModel.GMY" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="MaximumTiltAngleY" class="form-label">MaximumTiltAngleY</label>
+                                <InputNumber id="MaximumTiltAngleY" class="form-control" @bind-Value="@StabilityAboutYModel.MaximumTiltAngleY" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="MaxRightningMomentY" class="form-label">MaxRightningMomentY</label>
+                                <InputNumber id="MaxRightningMomentY" class="form-control" @bind-Value="@StabilityAboutYModel.MaxRightningMomentY" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="COB" class="form-label">MaxHeelingMomentY</label>
+                                <InputNumber id="MaxHeelingMomentY" class="form-control" @bind-Value="@StabilityAboutYModel.MaxHeelingMomentY" />
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="TiltAngleY" class="form-label">TiltAngleY</label>
+                                <InputNumber id="TiltAngleY" class="form-control" @bind-Value="@StabilityAboutYModel.TiltAngleY" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </EditForm>
+
+            </RadzenAccordionItem>
+
+            @* Wind Pressure Calc*@
+            <RadzenAccordionItem Text="Wind Pressure Table" CollapseTitle="Wind Pressure Table."
+                                 ExpandTitle="Wind Pressure Table." CollapseAriaLabel="wind pressure table."
+                                 ExpandAriaLabel="wind pressure table.">
+                <div class="row mt-2">
+                    <h4>Wind Pressure Calculation</h4>
+                    <div class="col-md-12">
+                        <RadzenDataGrid @ref="windCalcGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+                                        Data="@windCalcList" TItem="UIWindPressureCalculation" ColumnWidth="200px">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="UIWindPressureCalculation" Property="Description" Title="Description" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIWindPressureCalculation" Property="Units" Title="Units" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIWindPressureCalculation" Property="Value" Title="Value" Width="120px" />
+
+                            </Columns>
+                        </RadzenDataGrid>
+                    </div>
+                </div>
+            </RadzenAccordionItem>
+
+            @* Wind Load Calc*@
+            <RadzenAccordionItem Text="Wind Load Calculation Table" CollapseTitle="Wind Load Calculation Table."
+                                 ExpandTitle="Wind Load Calculation Table." CollapseAriaLabel="Wind Load Calculation Table."
+                                 ExpandAriaLabel="Wind Load Calculation Table.">
+                <div class="row mt-2">
+                    <h4>Wind Load Calculations</h4>
+                    <div class="col-md-12">
+                        <RadzenDataGrid @ref="WindLoadCalcGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5"
+                                        AllowSorting="true" EditMode="DataGridEditMode.Single"
+                                        Data="@WindLoadCalcList" TItem="UIWindLoadCalculation" ColumnWidth="200px">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="UIWindLoadCalculation" Property="SNo" Title="S. No." Width="100px" />
+
+                                <RadzenDataGridColumn TItem="UIWindLoadCalculation" Property="Description" Title="Description" Width="200px" />
+
+                                <RadzenDataGridColumn TItem="UIWindLoadCalculation" Property="Units" Title="Units" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIWindLoadCalculation" Property="X" Title="X" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIWindLoadCalculation" Property="Y" Title="Y" Width="120px" />
+                            </Columns>
+                        </RadzenDataGrid>
+                    </div>
+                </div>
+
+            </RadzenAccordionItem>
+
+            @* Drag Force Calc*@
+            <RadzenAccordionItem Text="Drag Force Calculation Table" CollapseTitle="Drag Force Calculation Table."
+                                 ExpandTitle="Drag Force Calculation Table." CollapseAriaLabel="Drag Force Calculation Table."
+                                 ExpandAriaLabel="Drag Force Calculation Table.">
+                <div class="row mt-2">
+                    <h4>Drag Force Calculations</h4>
+                    <div class="col-md-12">
+                        <RadzenDataGrid @ref="DragForceCalcGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5"
+                                        AllowSorting="true" EditMode="DataGridEditMode.Single"
+                                        Data="@DragForceCalcList" TItem="UIDragForceCalculations" ColumnWidth="200px">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="UIDragForceCalculations" Property="SNo" Title="S. No." Width="100px" />
+
+                                <RadzenDataGridColumn TItem="UIDragForceCalculations" Property="Description" Title="Description" Width="200px" />
+
+                                <RadzenDataGridColumn TItem="UIDragForceCalculations" Property="Units" Title="Units" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIDragForceCalculations" Property="X" Title="X" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIDragForceCalculations" Property="Y" Title="Y" Width="120px" />
+                            </Columns>
+                        </RadzenDataGrid>
+                    </div>
+                </div>
+
+            </RadzenAccordionItem>
+
+            @* Wave Force Calc*@
+            <RadzenAccordionItem Text="Wave Force Calculation Table" CollapseTitle="Wave Force Calculation Table."
+                                 ExpandTitle="Wave Force Calculation Table." CollapseAriaLabel="Wave Force Calculation Table."
+                                 ExpandAriaLabel="Wave Force Calculation Table.">
+                                 
+                <div class="row mt-2">
+                    <h4>Wave Force Calculations</h4>
+                    <div class="col-md-12">
+                        <RadzenDataGrid @ref="WaveForceCalcGrid" Data="@WaveForceCalcList" TItem="UIWaveForceCalculation" AllowAlternatingRows="false"
+                                        AllowFiltering="true" AllowPaging="true" PageSize="5"
+                                        AllowSorting="true"
+                                        EditMode="DataGridEditMode.Single"
+                                        ColumnWidth="200px">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="UIWaveForceCalculation" Property="SNo" Title="S. No." Width="100px" />
+
+                                <RadzenDataGridColumn TItem="UIWaveForceCalculation" Property="Description" Title="Description" Width="200px" />
+
+                                <RadzenDataGridColumn TItem="UIWaveForceCalculation" Property="Units" Title="Units" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIWaveForceCalculation" Property="X" Title="X" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIWaveForceCalculation" Property="Y" Title="Y" Width="120px" />
+                            </Columns>
+                        </RadzenDataGrid>
+                    </div>
+                </div>
+                
+            </RadzenAccordionItem>
+
+            @* Dead Weight Anchor and Mooring Calc*@
+            <RadzenAccordionItem Text="Dead Weight Anchor and Mooring Calculation Table" CollapseTitle="Dead Weight Anchor and Mooring Calculation Table."
+                                 ExpandTitle="Dead Weight Anchor and Mooring Calculation Table." CollapseAriaLabel="Dead Weight Anchor and Mooring Calculation Table."
+                                 ExpandAriaLabel="Dead Weight Anchor and Mooring Calculation Table.">
+                <div class="row mt-2">
+                    <h4>Dead Weight Anchor & Mooring Calculations</h4>
+                    <div class="col-md-12">
+                        <RadzenDataGrid @ref="DeadWeightAnchorAndMooringGrid" Data="@DeadWeightAnchorAndMooringList" TItem="UIDeadWeightAnchorAndMooringCalculation" AllowAlternatingRows="false" AllowFiltering="true"
+                                        AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single" ColumnWidth="200px">
+                            <Columns>
+                                <RadzenDataGridColumn TItem="UIDeadWeightAnchorAndMooringCalculation" Property="SNo" Title="S. No." Width="100px" />
+
+                                <RadzenDataGridColumn TItem="UIDeadWeightAnchorAndMooringCalculation" Property="Description" Title="Description" Width="200px" />
+
+                                <RadzenDataGridColumn TItem="UIDeadWeightAnchorAndMooringCalculation" Property="Units" Title="Units" Width="120px" />
+
+                                <RadzenDataGridColumn TItem="UIDeadWeightAnchorAndMooringCalculation" Property="AlongXDirection" Title="Along X Direction" Width="150px" />
+
+                                <RadzenDataGridColumn TItem="UIDeadWeightAnchorAndMooringCalculation" Property="AlongYDirection" Title="Along Y Direction" Width="150px" />
+                            </Columns>
+                        </RadzenDataGrid>
+                    </div>
+                </div>
+
+            </RadzenAccordionItem>
+
+        </Items>
+    </RadzenAccordion>
+</div>
+
+@code {
+
+    public UIPontoonAndSiteData UIPontoonAndSiteData { get; set; } = new();
+    public List<UIInputsAndLayout> UIInputandLayoutList = new();
+
+    // for radzen grid
+    RadzenDataGrid<UIHydrostatics> hydrostaticsGrid;
+    private List<UIHydrostatics> hydrostaticList = new List<UIHydrostatics>();
+    RadzenDataGrid<UILoadDatas> loadDatasGrid;
+    private List<UILoadDatas> loadDatasList = new List<UILoadDatas>();
+
+    // for buoyancy calculations
+    public UIBuoyancyCalculations BuoyancyModel { get; set; } = new();
+
+    // for stability about x
+    public UIStabilityAboutX StabilityAboutXModel { get; set; } = new();
+
+    // for stability about y
+    public UIStabilityAboutY StabilityAboutYModel { get; set; } = new();
+
+    // for radzen grid - Wind Pressure Calc
+    RadzenDataGrid<UIWindPressureCalculation> windCalcGrid;
+    private List<UIWindPressureCalculation> windCalcList = new List<UIWindPressureCalculation>();
+
+    // for radzen grid - Wind Load Calc
+    RadzenDataGrid<UIWindLoadCalculation> WindLoadCalcGrid;
+    private List<UIWindLoadCalculation> WindLoadCalcList = new List<UIWindLoadCalculation>();
+    
+    // for radzen grid - Drag Force Calc
+    RadzenDataGrid<UIDragForceCalculations> DragForceCalcGrid;
+    private List<UIDragForceCalculations> DragForceCalcList = new List<UIDragForceCalculations>();
+
+    // for radzen grid - Wave Force Calc
+    RadzenDataGrid<UIWaveForceCalculation> WaveForceCalcGrid;
+    private List<UIWaveForceCalculation> WaveForceCalcList = new List<UIWaveForceCalculation>();
+
+    // for radzen grid - DeadWeight Anchor And Mooring Force Calc
+    RadzenDataGrid<UIDeadWeightAnchorAndMooringCalculation> DeadWeightAnchorAndMooringGrid;
+    private List<UIDeadWeightAnchorAndMooringCalculation> DeadWeightAnchorAndMooringList = new List<UIDeadWeightAnchorAndMooringCalculation>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetAllInputDetails();
+        await GetLoadDatasDetails();
+    }
+
+    public async Task GetAllInputDetails()
+    {
+        try
+        {
+            // get the inputs list
+            UIInputandLayoutList = await HttpClient.GetFromJsonAsync<List<UIInputsAndLayout>>("InputsandLayout/GetAllInputs");
+
+            // get first value from list
+            var input = UIInputandLayoutList.First();
+
+            // update the list in the ui
+            if (UIInputandLayoutList is not null)
+            {
+                UIPontoonAndSiteData.VesselLength = input.Length;
+                UIPontoonAndSiteData.VesselWidth = input.Width;
+                // UIPontoonAndSiteData.VesselDepth = input.VesselDepth;
+                UIPontoonAndSiteData.WindSpeed = input.WindVelocity;
+                UIPontoonAndSiteData.CurrentSpeed = input.CurrentSpeed;
+                UIPontoonAndSiteData.WaveHeight = input.WaveHeight;
+                // UIPontoonAndSiteData.VesselWeight = input.VesselWeight;
+                // UIPontoonAndSiteData.VesselCOGX = input.VesselCOGX;
+                // UIPontoonAndSiteData.VesselCOGY = input.VesselCOGY;
+                // UIPontoonAndSiteData.VesselCOGZ = input.VesselCOGZ;
+                // UIPontoonAndSiteData.MOIX = input.MOIX;
+                // UIPontoonAndSiteData.MOIY = input.MOIY;
+                // UIPontoonAndSiteData.VesselBuoyancy = input.VesselBuoyancy;
+                // UIPontoonAndSiteData.TotalArea = input.TotalArea;
+                // UIPontoonAndSiteData.MinimumFreeBoard = input.MinimumFreeBoard;
+                // UIPontoonAndSiteData.MaximumDraft = input.MaximumDraft;
+                UIPontoonAndSiteData.DragCoefficientX = input.DragCoefficientX;
+                UIPontoonAndSiteData.DragCoefficientY = input.DragCoefficientY;
+                UIPontoonAndSiteData.WaterDepth = input.MaxWaterDepth;
+                UIPontoonAndSiteData.ScopeToWaterDepthRatio = input.ScopeToWaterDepthRatio;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading float selections: {ex.Message}");
+        }
+    }
+
+    public async Task GetLoadDatasDetails()
+    {
+        try
+        {
+            loadDatasList = await HttpClient.GetFromJsonAsync<List<UILoadDatas>>("LoadDatas/GetAllLoadData");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading rope constants: {ex.Message}");
+        }
+    }
+
+    public async Task HandleBuoyancySubmit()
+    {
+        Console.WriteLine($"Total Buoyancy: {BuoyancyModel.TotalBuoyancy}");
+        Console.WriteLine($"Reserved Buoyancy: {BuoyancyModel.ReservedBuoyancy}");
+        Console.WriteLine($"Draft: {BuoyancyModel.Draft}");
+        Console.WriteLine($"Freeboard: {BuoyancyModel.Freeboard}");
+
+        BuoyancyModel = new();
+    }
+
+    public async Task HandleStabilityAboutX()
+    {
+        Console.WriteLine($"COB: {StabilityAboutXModel.COB}");
+        Console.WriteLine($"COGZ: {StabilityAboutXModel.COGZ}");
+        Console.WriteLine($"BMIVX: {StabilityAboutXModel.BMIVX}");
+        Console.WriteLine($"BG: {StabilityAboutXModel.BG}");
+        Console.WriteLine($"GMX: {StabilityAboutXModel.GMX}");
+        Console.WriteLine($"MaxTiltAngleX: {StabilityAboutXModel.MaxTiltAngleX}");
+        Console.WriteLine($"MaxRightningMomentX: {StabilityAboutXModel.MaxRightningMomentX}");
+        Console.WriteLine($"MaxHeelingMomentX: {StabilityAboutXModel.MaxHeelingMomentX}");
+        Console.WriteLine($"TiltAngleX: {StabilityAboutXModel.TiltAngleX}");
+
+        StabilityAboutXModel = new();
+    }
+
+    private void HandleStabilityAboutY()
+    {
+        Console.WriteLine($"COB: {StabilityAboutYModel.COB}");
+        Console.WriteLine($"COGZ: {StabilityAboutYModel.COGZ}");
+        Console.WriteLine($"BMIVY: {StabilityAboutYModel.BMIVY}");
+        Console.WriteLine($"BG: {StabilityAboutYModel.BG}");
+        Console.WriteLine($"GMY: {StabilityAboutYModel.GMY}");
+        Console.WriteLine($"MaxTiltAngleY: {StabilityAboutYModel.MaximumTiltAngleY}");
+        Console.WriteLine($"MaxRightningMomentY: {StabilityAboutYModel.MaxRightningMomentY}");
+        Console.WriteLine($"MaxHeelingMomentY: {StabilityAboutYModel.MaxHeelingMomentY}");
+        Console.WriteLine($"TiltAngleY: {StabilityAboutYModel.TiltAngleY}");
+
+        StabilityAboutYModel = new();
+    }
+}

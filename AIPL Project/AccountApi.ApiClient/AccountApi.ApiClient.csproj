@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AccontApi.Core\AccontApi.Core.csproj" />
+    <ProjectReference Include="..\AccountApi.Application\AccountApi.Application.csproj" />
+    <ProjectReference Include="..\AccountApi.Infrastructure\AccountApi.Infrastructure.csproj" />
+    <ProjectReference Include="..\AccountApi.Logging\AccountApi.Logging.csproj" />
+    <ProjectReference Include="..\AccountApi.Sql\AccountApi.Sql.csproj" />
+  </ItemGroup>
+
+</Project>

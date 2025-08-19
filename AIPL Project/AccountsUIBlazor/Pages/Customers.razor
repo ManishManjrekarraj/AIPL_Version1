@@ -1,0 +1,61 @@
+﻿@page "/Customers"
+
+
+@using Accounts.Models.UIModels
+@using System.Net.Http;
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient HttpClient;
+@inject NavigationManager navigationManager;
+
+<EditForm Model="CustomerList" OnValidSubmit="@HandleValidSubmit">
+    @* <DataAnnotationsValidator /> *@
+    <ValidationSummary />
+
+    <h3>Add Multiple Customers</h3>
+
+    @foreach (var customer in CustomerList)
+    {
+        <CustomerEntry Customer="@customer"
+        ShowRemoveButton="@(CustomerList.Count > 1)"
+        OnRemove="@(c => CustomerList.Remove(c))" />
+    }
+
+    <button type="button" class="btn btn-secondary" @onclick="AddNewCustomer">
+        Add Another Customer
+    </button>
+
+    <button type="submit" class="btn btn-primary">Submit All</button>
+</EditForm>
+
+@code {
+    private List<Customer> CustomerList { get; set; } = new List<Customer>();
+
+    protected override void OnInitialized()
+    {
+        CustomerList.Add(new Customer
+            {
+                Id = Guid.NewGuid(),
+                Name = "harsha",
+                Email = "harsha@mail.com",
+                Phone = "harshaPhone"
+            });
+        AddNewCustomer();
+
+    }
+
+    private void AddNewCustomer()
+    {
+        CustomerList.Add(new Customer());
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // await YourDataService.SaveCustomersAsync(CustomerList);
+        var obj = await HttpClient.PostAsJsonAsync($"FloatCategory/AddCustomer", CustomerList);
+        Console.WriteLine($"CustomerList : {CustomerList} ");
+        CustomerList = new List<Customer>();
+        AddNewCustomer();
+    }
+}
+

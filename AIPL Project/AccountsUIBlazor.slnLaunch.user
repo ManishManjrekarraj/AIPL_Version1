@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "Accounts.Apis\\Accounts.Apis.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "AccountsUIBlazor\\AccountsUIBlazor.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

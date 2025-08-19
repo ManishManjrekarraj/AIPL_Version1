@@ -1,0 +1,88 @@
+03-08-2025 15:47:55	This log contains information about the import schema operation into project 'AIPLDB' on computer 'LAPTOP-T0U5FLOV' by user 'Manish raj'.
+03-08-2025 15:47:55	Import of database schema has started.
+03-08-2025 15:48:00	Gathering database credentials
+03-08-2025 15:48:00	Gathering database options
+03-08-2025 15:48:00	Gathering generic database scoped configuration option
+03-08-2025 15:48:00	Gathering users
+03-08-2025 15:48:00	Gathering roles
+03-08-2025 15:48:00	Gathering application roles
+03-08-2025 15:48:00	Gathering role memberships
+03-08-2025 15:48:00	Gathering filegroups
+03-08-2025 15:48:00	Gathering full-text catalogs
+03-08-2025 15:48:00	Gathering assemblies
+03-08-2025 15:48:00	Gathering certificates
+03-08-2025 15:48:00	Gathering asymmetric keys
+03-08-2025 15:48:00	Gathering symmetric keys
+03-08-2025 15:48:00	Gathering encrypted symmetric keys
+03-08-2025 15:48:00	Gathering schemas
+03-08-2025 15:48:00	Gathering XML schema collections
+03-08-2025 15:48:00	Gathering user-defined data types
+03-08-2025 15:48:00	Gathering user-defined types
+03-08-2025 15:48:00	Gathering table types
+03-08-2025 15:48:00	Gathering unique keys for table types
+03-08-2025 15:48:00	Gathering primary keys for table types
+03-08-2025 15:48:00	Gathering indexes for table types
+03-08-2025 15:48:01	Gathering check constraints for table types
+03-08-2025 15:48:01	Gathering default constraints for table types
+03-08-2025 15:48:01	Gathering partition functions
+03-08-2025 15:48:01	Gathering partition schemes
+03-08-2025 15:48:01	Gathering functions
+03-08-2025 15:48:01	Gathering encrypted functions
+03-08-2025 15:48:01	Gathering aggregates
+03-08-2025 15:48:01	Gathering procedures
+03-08-2025 15:48:01	Gathering encrypted procedures
+03-08-2025 15:48:01	Gathering tables
+03-08-2025 15:48:01	Gathering primary keys
+03-08-2025 15:48:01	Gathering unique constraints
+03-08-2025 15:48:01	Gathering foreign keys
+03-08-2025 15:48:01	Gathering default constraints
+03-08-2025 15:48:01	Gathering check constraints
+03-08-2025 15:48:01	Gathering views
+03-08-2025 15:48:01	Gathering encrypted views
+03-08-2025 15:48:01	Gathering indexes
+03-08-2025 15:48:01	Gathering statistics
+03-08-2025 15:48:01	Gathering full-text index stoplists
+03-08-2025 15:48:01	Gathering search property lists
+03-08-2025 15:48:01	Gathering search properties
+03-08-2025 15:48:01	Gathering full-text indexes
+03-08-2025 15:48:01	Gathering column store indexes
+03-08-2025 15:48:01	Gathering spatial indexes
+03-08-2025 15:48:01	Gathering XML indexes
+03-08-2025 15:48:01	Gathering Selective XML indexes
+03-08-2025 15:48:01	Gathering encrypted triggers
+03-08-2025 15:48:01	Gathering triggers
+03-08-2025 15:48:01	Gathering encrypted and clr ddl triggers
+03-08-2025 15:48:01	Gathering ddl triggers
+03-08-2025 15:48:01	Creating edge constraints
+03-08-2025 15:48:01	Gathering synonyms
+03-08-2025 15:48:01	Gathering defaults
+03-08-2025 15:48:01	Gathering data constraint uddt bindings
+03-08-2025 15:48:01	Gathering rules
+03-08-2025 15:48:01	Gathering data constraint uddt bindings
+03-08-2025 15:48:01	Gathering message types
+03-08-2025 15:48:01	Gathering queues
+03-08-2025 15:48:01	Gathering contracts
+03-08-2025 15:48:01	Gathering services
+03-08-2025 15:48:01	Gathering event notifications
+03-08-2025 15:48:01	Gathering remote service bindings
+03-08-2025 15:48:01	Gathering broker priorities
+03-08-2025 15:48:01	Gathering signatures
+03-08-2025 15:48:01	Gathering compression options
+03-08-2025 15:48:01	Gathering sequence types
+03-08-2025 15:48:01	Gathering security policies
+03-08-2025 15:48:01	Gather column encryption keys
+03-08-2025 15:48:01	Gathering column master keys
+03-08-2025 15:48:01	Gathering external data sources
+03-08-2025 15:48:01	Gathering external file formats
+03-08-2025 15:48:01	Gathering external tables
+03-08-2025 15:48:01	Gathering database permissions
+03-08-2025 15:48:01	Gathering extended properties
+03-08-2025 15:48:01	Gathering assemblies
+03-08-2025 15:48:01	Gathering credentials
+03-08-2025 15:48:01	Gathering logins
+03-08-2025 15:48:01	Gathering server audits
+03-08-2025 15:48:02	Scanning project for duplicate elements
+03-08-2025 15:48:03	Finished duplicate element processing
+03-08-2025 15:48:03	Finished importing database.
+03-08-2025 15:48:03	A summary of the import was saved to the following location: C:\Users\Manish raj\source\repos\AIPL\AIPL Project\AIPLDB\Import Schema Logs\AIPLDB_20250803101755.log
+03-08-2025 15:48:03	Click Finish to continue...

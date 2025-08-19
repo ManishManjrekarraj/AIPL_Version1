@@ -1,0 +1,198 @@
+﻿@using Accounts.Models.UIModels
+@using System.Net.Http;
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient HttpClient;
+@inject NavigationManager navigationManager;
+
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- FloatSize -->
+        <div class="col">
+            <label>Float Size</label>
+            @* <input class="form-control" @bind-value="FloatSizeLayoutModel.FloatSize" /> *@
+            @* <select @bind="FloatSizeLayoutModel.FloatSize" class="form-select">
+                <option value="">-- Select --</option>
+                @foreach (var category in FloatCategories)
+                {
+                    <option value="@category.FloatCategoryId">@category.FloatCategory</option>
+                }
+            </select> *@
+            <select id="Domain" class="form-control" value="@FloatSizeLayoutModel.FloatSize" @onchange="OnFloatSizeChange">
+                <option value="">-- Select --</option>
+                @foreach (var category in FilteredFloatCategoryItems)
+                {
+                    <option value="@category.CategoryItems.ToString()">@category.CategoryItems</option>
+                }
+            </select>
+        </div>
+
+        <!-- XCordinate -->
+        <div class="col">
+            <label>X Coordinate</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.XCordinate" />
+        </div>
+
+        <!-- YCordinate -->
+        <div class="col">
+            <label>Y Coordinate</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.YCordinate" />
+        </div>
+
+        <!-- WeightTonns -->
+        <div class="col">
+            <label>Weight (Tonns)</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.WeightTonns" disabled />
+        </div>
+
+        <!-- COGx -->
+        <div class="col">
+            <label>COG X</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.COGx" disabled />
+        </div>
+
+        <!-- COGy -->
+        <div class="col">
+            <label>COG Y</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.COGy" disabled />
+        </div>
+
+        <!-- COGz -->
+        <div class="col">
+            <label>COG Z</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.COGz" disabled />
+        </div>
+
+        <!-- Area -->
+        <div class="col">
+            <label>Area</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.Area" disabled />
+        </div>
+
+        <!-- MOIxLocalCentroid -->
+        <div class="col">
+            <label>MOI X Local Centroid</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.MOIxLocalCentroid" disabled />
+        </div>
+
+        <!-- MOIyLocalCentroid -->
+        <div class="col">
+            <label>MOI Y Local Centroid</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.MOIyLocalCentroid" disabled />
+        </div>
+
+        <!-- WeighedX -->
+        <div class="col">
+            <label>Weighed X</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.WeighedX" disabled />
+        </div>
+
+        <!-- WeighedY -->
+        <div class="col">
+            <label>Weighed Y</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.WeighedY" disabled />
+        </div>
+
+        <!-- WeighedZ -->
+        <div class="col">
+            <label>Weighed Z</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.WeighedZ" disabled />
+        </div>
+
+        <!-- MOIx -->
+        <div class="col">
+            <label>MOI X</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.MOIx" disabled />
+        </div>
+
+        <!-- MOIy -->
+        <div class="col">
+            <label>MOI Y</label>
+            <input class="form-control" type="number" @bind-value="FloatSizeLayoutModel.MOIy" disabled />
+        </div>
+    </div>
+
+
+
+    @if (ShowRemoveButton)
+    {
+        <div class="row mt-3">
+            <div class="col-md-12">
+                <button type="button" class="btn btn-danger" @onclick="Remove">
+                    Remove
+                </button>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public UIFloatSizeLayout FloatSizeLayoutModel { get; set; }
+
+    [Parameter]
+    public List<UIFloatSelection> FloatCategoryItems { get; set; } = new();
+
+    [Parameter]
+    public List<UIParameters> AllParameters { get; set; } = new();
+
+    [Parameter]
+    public string SelectFloat { get; set; }
+
+    [Parameter]
+    public bool ShowRemoveButton { get; set; }
+
+    [Parameter]
+    public EventCallback<UIFloatSizeLayout> OnRemove { get; set; }
+
+    private IEnumerable<UIFloatSelection> FilteredFloatCategoryItems =>
+        string.IsNullOrEmpty(SelectFloat)
+            ? FloatCategoryItems
+            : FloatCategoryItems.Where(fc => SelectFloat.Contains(fc.FloatCategoryId.ToString()));
+    // private void Remove()
+    public async Task Remove()
+    {
+        OnRemove.InvokeAsync(FloatSizeLayoutModel);
+        // var obj = await HttpClient.PostAsJsonAsync($"FloatCategory/DeleteCustomer", Customer);
+    }
+
+    private async Task OnFloatSizeChange(ChangeEventArgs e)
+    {
+        var selectedValue = e.Value?.ToString();
+        if (!string.IsNullOrEmpty(selectedValue))
+        {
+            FloatSizeLayoutModel.FloatSize = selectedValue;
+
+            this.UpdateFloatSizeLayoutModel();
+        }
+    }
+
+    private void UpdateFloatSizeLayoutModel()
+    {
+        var matchingParameter = AllParameters.FirstOrDefault(p => p.FloatSize == FloatSizeLayoutModel.FloatSize);
+        if (matchingParameter != null)
+        {
+            FloatSizeLayoutModel.XCordinate = matchingParameter.XCordinate;
+            FloatSizeLayoutModel.YCordinate = matchingParameter.YCordinate;
+            FloatSizeLayoutModel.WeightTonns = matchingParameter.WeightTonns;
+            FloatSizeLayoutModel.COGx = matchingParameter.COGx;
+            FloatSizeLayoutModel.COGy = matchingParameter.COGy;
+            FloatSizeLayoutModel.COGz = matchingParameter.COGz;
+            FloatSizeLayoutModel.Area = matchingParameter.Area;
+            FloatSizeLayoutModel.MOIxLocalCentroid = matchingParameter.MOIxLocalCentroid;
+            FloatSizeLayoutModel.MOIyLocalCentroid = matchingParameter.MOIyLocalCentroid;
+            FloatSizeLayoutModel.WeighedX = matchingParameter.WeighedX;
+            FloatSizeLayoutModel.WeighedY = matchingParameter.WeighedY;
+            FloatSizeLayoutModel.WeighedZ = matchingParameter.WeighedZ;
+            FloatSizeLayoutModel.MOIx = matchingParameter.MOIx;
+            FloatSizeLayoutModel.MOIy = matchingParameter.MOIy;
+        }
+    }
+
+
+
+
+}

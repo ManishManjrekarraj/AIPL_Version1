@@ -1,0 +1,66 @@
+﻿<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">Accounts</a>
+        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </div>
+</div>
+
+<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
+    <nav class="flex-column navbar-nav-scroll h-100 text-nowrap">
+        
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="AddRopeConstants">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Add Rope Constants
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="AddChainConstants">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Add Chain Constants
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="AddFloatCategory">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Add Float Category
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="AddFloatSelection">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Add Float Selection
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="InputsAndLayout">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Inputs And Layout
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="DesignCalculations">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Design Calculations 
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="AddProjectDetails">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Add Project Details
+            </NavLink>
+        </div>
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="Customers">
+                <span class="oi oi-list-rich" aria-hidden="true"></span> Add Customers
+            </NavLink>
+        </div>
+        
+    </nav>
+</div>
+
+@code {
+    private bool collapseNavMenu = true;
+
+    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+
+    private void ToggleNavMenu()
+    {
+        collapseNavMenu = !collapseNavMenu;
+    }
+}

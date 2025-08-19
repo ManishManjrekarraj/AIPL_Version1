@@ -1,0 +1,114 @@
+﻿@page "/AddProjectDetails"
+
+@using Accounts.Models.UIModels
+@using System.Net.Http;
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient HttpClient;
+@inject NavigationManager navigationManager;
+@using Newtonsoft.Json;
+@inject NavigationManager Navigation
+
+<h3>ProjectDetails</h3>
+
+<EditForm Model="@UIProjectDetails" OnValidSubmit="HandleValidSubmit">
+
+    <div class="row">
+        <div class="col-md-3">
+            <label for="ProjectName">Project Name</label>
+            <input id="ProjectName" class="form-control" @bind="UIProjectDetails.ProjectName" />
+        </div>
+        <div class="col-md-3">
+            <label for="CompanyName">Company Name</label>
+            <input id="CompanyName" class="form-control" @bind="UIProjectDetails.CompanyName" />
+        </div>
+        <div class="col-md-3">
+            <label for="ClientName">Client Name</label>
+            <input id="ClientName" class="form-control" @bind="UIProjectDetails.ClientName" />
+        </div>
+        <div class="col-md-3">
+            <label for="MobileNumber">Mobile Number</label>
+            <input id="MobileNumber" type="number" class="form-control" @bind="UIProjectDetails.MobileNumber" />
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-md-3">
+            <label for="EmailId">Email ID</label>
+            <input id="EmailId" type="email" class="form-control" @bind="UIProjectDetails.EmailId" />
+        </div>
+        <div class="col-md-3">
+            <label for="Domain">Domain</label>
+            <select id="Domain" class="form-control" @bind="UIProjectDetails.Domain">
+                @foreach (var domain in Enum.GetValues<Domain>())
+                {
+                    <option value="@domain">@domain</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label for="AttachFile">Attach File</label>
+            <input id="AttachFile" type="text" class="form-control" @bind="UIProjectDetails.AttachFile" />
+        </div>
+        <div class="col-md-3">
+            <label for="ProjectDescription">Project Description</label>
+            <textarea id="ProjectDescription" class="form-control" @bind="UIProjectDetails.ProjectDescription"></textarea>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-12 text-end">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    public UIProjectDetails UIProjectDetails { get; set; } = new();
+    public UIProjectDetails uIProjectDetails;
+
+    protected override async Task OnInitializedAsync()
+    {
+        UIProjectDetails = new UIProjectDetails
+            {
+                ProjectName = "var",
+                CompanyName = "fv",
+                ClientName = "fv",
+                MobileNumber = 123,
+                EmailId = "fv@mail.com",
+                Domain = Domain.Construction,
+                AttachFile = "fv",
+                ProjectDescription = "fv",
+            };
+    }
+
+    public async Task HandleValidSubmit(EditContext formContext)
+    {
+        uIProjectDetails = (UIProjectDetails)formContext.Model;
+
+        // var guid = Guid.NewGuid();
+        // uIProjectDetails.Id = guid;
+
+        // var url = $"/AddUser?id={guid}";
+        // Navigation.NavigateTo(url);
+
+        // Console.WriteLine("Form Submitted");
+        // Console.WriteLine($"Project Name: {UIProjectDetails.ProjectName}");
+        // Console.WriteLine($"Company Name: {UIProjectDetails.CompanyName}");
+        // Console.WriteLine($"Client Name: {UIProjectDetails.ClientName}");
+        // Console.WriteLine($"Mobile: {UIProjectDetails.MobileNumber}");
+        // Console.WriteLine($"Email: {UIProjectDetails.EmailId}");
+        // Console.WriteLine($"Domain: {UIProjectDetails.Domain}");
+        // Console.WriteLine($"Attach File: {UIProjectDetails.AttachFile}");
+        // Console.WriteLine($"Description: {UIProjectDetails.ProjectDescription}");
+
+        var obj = await HttpClient.PostAsJsonAsync($"ProjectDetails", uIProjectDetails);
+
+        var APIreturn = JsonConvert.DeserializeObject<Project_ID>(await obj.Content.ReadAsStringAsync());
+
+        var url = $"/InputsAndLayout?projectid={APIreturn.ProjectID}";
+        Navigation.NavigateTo(url);
+
+        UIProjectDetails = new();
+    }
+}

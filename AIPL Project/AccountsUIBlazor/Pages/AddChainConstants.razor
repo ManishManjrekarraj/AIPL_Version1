@@ -1,0 +1,115 @@
+﻿@page "/AddChainConstants"
+
+@using Accounts.Models.UIModels
+@using System.Net.Http;
+@using System.Text;
+@using System.Text.Json;
+@inject HttpClient HttpClient;
+@inject NavigationManager navigationManager;
+
+<h3>AddChainConstants</h3>
+
+<EditForm Model="UIChainConstants" OnValidSubmit="ValidSubmit">
+    <div class="row">
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <label for="chaingrade">Chain Grade</label>
+                <input type="text" class="form-control" id="chaingrade" @bind-value="@UIChainConstants.ChainGrade" placeholder="enter chain grade..." />
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <label for="notation">Notation</label>
+                <input type="text" class="form-control" id="notation" @bind-value="UIChainConstants.Notation" placeholder="enter notation..." />
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <label for="constantK">Constant K(kN/mm2)</label>
+                <input type="text" class="form-control" id="constantK" @bind-value="@UIChainConstants.ConstantK" placeholder="enter constant k..." />
+            </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+            <div class="col-md-12">
+                <label for="RequiredDia">Diameter(mm)</label>
+                <input type="text" class="form-control" id="RequiredDia" @bind-value="@UIChainConstants.Diameter" placeholder="enter diameter..." />
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary" Style="margin-top:10px">Add</button>
+
+    </div>
+</EditForm>
+
+<div class="row mt-2">
+    <h4>Chain Constants Details</h4>
+    <div class="col-md-12">
+        <RadzenDataGrid @ref="chainConstantsGrid" AllowAlternatingRows="false" AllowFiltering="true" AllowPaging="true" PageSize="5" AllowSorting="true" EditMode="DataGridEditMode.Single"
+        Data="@chainconstants" TItem="UIChainConstants" ColumnWidth="200px">
+            <Columns>
+                <RadzenDataGridColumn TItem="UIChainConstants" Property="ChainGrade" Title="Chain Grade" Width="120px" />
+
+                <RadzenDataGridColumn TItem="UIChainConstants" Property="Notation" Title="Notation" Width="120px" />
+
+                <RadzenDataGridColumn TItem="UIChainConstants" Property="ConstantK" Title="ConstantK" Width="120px" />
+
+                <RadzenDataGridColumn TItem="UIChainConstants" Property="Diameter" Title="Diameter" Width="120px" />
+
+            </Columns>
+        </RadzenDataGrid>
+    </div>
+</div>
+
+@code {
+    public UIChainConstants UIChainConstants { get; set; } = new();
+    private UIChainConstants uiChainConstants;
+
+    RadzenDataGrid<UIChainConstants> chainConstantsGrid;
+    private List<UIChainConstants> chainconstants = new List<UIChainConstants>();
+    // private UIChainConstants uichainconstants;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadChainConstantsDetails();
+    }
+
+    public async Task LoadChainConstantsDetails()
+    {
+        try
+        {
+            chainconstants = await HttpClient.GetFromJsonAsync<List<UIChainConstants>>("ChainConstants/GetAllChainConstants");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error loading chain constants: {ex.Message}");
+        }
+    }
+
+
+
+    public async Task ValidSubmit(EditContext formContext)
+    {
+        uiChainConstants = (UIChainConstants)formContext.Model;
+
+        try
+        {
+            // Console.WriteLine($"data : {uiChainConstants.ChainGrade}");
+            // Console.WriteLine($"data : {uiChainConstants.Notation}");
+            // Console.WriteLine($"data : {uiChainConstants.ConstantK}");
+            // Console.WriteLine($"data : {uiChainConstants.Diameter}");
+            var obj = await HttpClient.PostAsJsonAsync($"ChainConstants", uiChainConstants);
+            Console.WriteLine(obj);
+            UIChainConstants = new();
+            await LoadChainConstantsDetails(); // Refresh grid
+
+        }
+        catch (Exception ex)
+        {
+
+            Console.WriteLine(ex.Message.ToString());
+        }
+        //return null;
+    }
+
+
+}
